@@ -14,7 +14,13 @@ Production-grade three-layer console application with Entity Framework Core (Cod
   - `GameDto.cs` — data transfer model for presentation
 - `src/ComputerGamesORM.Presentation` — Presentation layer
   - `ConsoleUi.cs` — console menu and user interaction
-  - `Program.cs` — app entry point, EF context initialization
+  - `AsciiRenderer.cs` — feature-flagged ASCII visual effects
+  - `AppSettings.cs` — UI feature flag model
+  - `Program.cs` — app entry point, configuration loading, EF context initialization
+  - `appsettings.json` — `EnableAsciiUI` feature flag
+- `tests/ComputerGamesORM.Tests` — NUnit test project
+  - `InMemoryDbContext.cs` — isolated EF InMemory context factory
+  - `GameServiceTests.cs` — deterministic unit tests (AAA)
 
 ## Features
 
@@ -32,11 +38,18 @@ Production-grade three-layer console application with Entity Framework Core (Cod
 - User input is validated
 - Empty/invalid names are blocked by business-level validation
 
-## Build and run
+## ASCII UI feature flag
+
+Feature flag `EnableAsciiUI` is controlled from `appsettings.json`.
+
+- `true` → startup banner + lightweight ASCII reactions (`✔`, `✖`, `📦`)
+- `false` → plain console output only
+
+## Build, test and run
 
 ```bash
 dotnet restore
-dotnet build
+dotnet test
 dotnet run --project src/ComputerGamesORM.Presentation
 ```
 

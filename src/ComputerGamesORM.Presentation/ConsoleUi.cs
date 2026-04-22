@@ -5,14 +5,18 @@ namespace ComputerGamesORM.Presentation;
 public sealed class ConsoleUi
 {
     private readonly IGameService _gameService;
+    private readonly AsciiRenderer _asciiRenderer;
 
-    public ConsoleUi(IGameService gameService)
+    public ConsoleUi(IGameService gameService, AsciiRenderer asciiRenderer)
     {
         _gameService = gameService;
+        _asciiRenderer = asciiRenderer;
     }
 
     public async Task RunAsync(CancellationToken cancellationToken = default)
     {
+        _asciiRenderer.RenderBanner();
+
         while (!cancellationToken.IsCancellationRequested)
         {
             PrintMenu();
@@ -39,7 +43,7 @@ public sealed class ConsoleUi
                 case "6":
                     return;
                 default:
-                    Console.WriteLine("Invalid option.");
+                    _asciiRenderer.Error("Invalid option.");
                     break;
             }
 
@@ -61,6 +65,8 @@ public sealed class ConsoleUi
 
     private async Task ListAllGamesAsync(CancellationToken cancellationToken)
     {
+        _asciiRenderer.ListHint();
+
         var games = await _gameService.GetAllAsync(cancellationToken);
         foreach (var game in games)
         {
@@ -76,10 +82,11 @@ public sealed class ConsoleUi
         try
         {
             await _gameService.AddAsync(gameName, cancellationToken);
+            _asciiRenderer.Success("Game added.");
         }
         catch (ArgumentException ex)
         {
-            Console.WriteLine(ex.Message);
+            _asciiRenderer.Error(ex.Message);
         }
     }
 
@@ -95,11 +102,14 @@ public sealed class ConsoleUi
             if (!isUpdated)
             {
                 Console.WriteLine("Game not found!");
+                return;
             }
+
+            _asciiRenderer.Success("Game updated.");
         }
         catch (ArgumentException ex)
         {
-            Console.WriteLine(ex.Message);
+            _asciiRenderer.Error(ex.Message);
         }
     }
 
@@ -125,7 +135,7 @@ public sealed class ConsoleUi
         }
     }
 
-    private static int ReadPositiveInteger(string prompt)
+    private int ReadPositiveInteger(string prompt)
     {
         while (true)
         {
@@ -137,7 +147,7 @@ public sealed class ConsoleUi
                 return id;
             }
 
-            Console.WriteLine("Invalid numeric ID.");
+            _asciiRenderer.Error("Invalid numeric ID.");
         }
     }
 }

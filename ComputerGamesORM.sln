@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerGamesORM.Business",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerGamesORM.Presentation", "src/ComputerGamesORM.Presentation/ComputerGamesORM.Presentation.csproj", "{2B2A7F9A-4380-4E95-96A8-1E7576B97BEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerGamesORM.Tests", "tests/ComputerGamesORM.Tests/ComputerGamesORM.Tests.csproj", "{A5C33979-4D81-4F0A-B7A2-8C7D8EA4F6E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,5 +28,9 @@ Global
 		{2B2A7F9A-4380-4E95-96A8-1E7576B97BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B2A7F9A-4380-4E95-96A8-1E7576B97BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B2A7F9A-4380-4E95-96A8-1E7576B97BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5C33979-4D81-4F0A-B7A2-8C7D8EA4F6E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5C33979-4D81-4F0A-B7A2-8C7D8EA4F6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5C33979-4D81-4F0A-B7A2-8C7D8EA4F6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5C33979-4D81-4F0A-B7A2-8C7D8EA4F6E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

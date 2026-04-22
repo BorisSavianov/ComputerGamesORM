@@ -2,6 +2,15 @@ using ComputerGamesORM.Business;
 using ComputerGamesORM.Data;
 using ComputerGamesORM.Presentation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: true)
+    .Build();
+
+var settings = configuration.Get<AppSettings>() ?? new AppSettings();
+var asciiRenderer = new AsciiRenderer(settings.EnableAsciiUI);
 
 var dbPath = Path.Combine(AppContext.BaseDirectory, "ComputerGamesORM.db");
 var options = new DbContextOptionsBuilder<ComputerGamesContext>()
@@ -13,7 +22,7 @@ using var dbContext = new ComputerGamesContext(options);
 await dbContext.Database.EnsureCreatedAsync();
 
 IGameService gameService = new GameService(dbContext);
-var ui = new ConsoleUi(gameService);
+var ui = new ConsoleUi(gameService, asciiRenderer);
 
 try
 {
@@ -21,5 +30,5 @@ try
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"Unexpected error: {ex.Message}");
+    asciiRenderer.Error($"Unexpected error: {ex.Message}");
 }
