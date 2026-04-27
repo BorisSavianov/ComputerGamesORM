@@ -42,7 +42,7 @@ Production-grade three-layer console application with Entity Framework Core (Cod
 
 Feature flag `EnableAsciiUI` is controlled from `appsettings.json`.
 
-- `true` → startup banner + lightweight ASCII reactions (`✔`, `✖`, `📦`)
+- `true` → startup banner + lightweight ASCII reactions (`✔`, `✖`)
 - `false` → plain console output only
 
 ## Build, test and run

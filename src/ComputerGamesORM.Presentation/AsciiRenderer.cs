@@ -50,7 +50,7 @@ public sealed class AsciiRenderer
     {
         if (_isEnabled)
         {
-            Console.WriteLine("📦 Listing games...");
+            Console.WriteLine("Listing games...");
         }
     }
 }
