@@ -16,11 +16,11 @@ public sealed class AsciiRenderer
             return;
         }
 
-        Console.WriteLine("  ____                        _");
-        Console.WriteLine(" / ___| __ _ _ __ ___   ___ | |");
-        Console.WriteLine("| |  _ / _` | '_ ` _ \\ / _ \\| |");
-        Console.WriteLine("| |_| | (_| | | | | | | (_) | |");
-        Console.WriteLine(" \\____|\\__,_|_| |_| |_|\\___/|_|");
+        Console.WriteLine("  ____    _    __  __ _____ ____  ");
+        Console.WriteLine(" / ___|  / \\  |  \\/  | ____/ ___| ");
+        Console.WriteLine("| |  _  / _ \\ | |\\/| |  _| \\___ \\ ");
+        Console.WriteLine("| |_| |/ ___ \\| |  | | |___ ___) |");
+        Console.WriteLine(" \\____/_/   \\_\\_|  |_|_____|____/ ");
         Console.WriteLine();
     }
 

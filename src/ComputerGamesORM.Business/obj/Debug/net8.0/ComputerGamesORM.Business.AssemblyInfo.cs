@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ComputerGamesORM.Business")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2805ef56f6e11f86802be5157d36c81a4e50904c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+068d9194ba042c34bf7a3c84a22caa05a4b8efd5")]
 [assembly: System.Reflection.AssemblyProductAttribute("ComputerGamesORM.Business")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ComputerGamesORM.Business")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
