@@ -1,0 +1,13 @@
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/bin/Debug/net8.0/ComputerGamesORM.Data.deps.json
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/bin/Debug/net8.0/ComputerGamesORM.Data.dll
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/bin/Debug/net8.0/ComputerGamesORM.Data.pdb
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.csproj.AssemblyReference.cache
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.GeneratedMSBuildEditorConfig.editorconfig
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.AssemblyInfoInputs.cache
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.AssemblyInfo.cs
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.csproj.CoreCompileInputs.cache
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.sourcelink.json
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.dll
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/refint/ComputerGamesORM.Data.dll
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ComputerGamesORM.Data.pdb
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/Debug/net8.0/ref/ComputerGamesORM.Data.dll

@@ -47,10 +47,17 @@ Feature flag `EnableAsciiUI` is controlled from `appsettings.json`.
 
 ## Build, test and run
 
+1. Start SQL Server 2022 using Docker Compose:
+```bash
+docker-compose up -d
+```
+
+2. Run the application:
 ```bash
 dotnet restore
 dotnet test
 dotnet run --project src/ComputerGamesORM.Presentation
 ```
 
-> The application uses SQLite file database `ComputerGamesORM.db` and creates it automatically at startup.
+> The application uses SQL Server 2022. Connection details are configured in `appsettings.json`. The database is created automatically at startup if it does not exist.
+

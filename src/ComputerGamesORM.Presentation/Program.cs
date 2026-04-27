@@ -12,14 +12,36 @@ var configuration = new ConfigurationBuilder()
 var settings = configuration.Get<AppSettings>() ?? new AppSettings();
 var asciiRenderer = new AsciiRenderer(settings.EnableAsciiUI);
 
-var dbPath = Path.Combine(AppContext.BaseDirectory, "ComputerGamesORM.db");
+var connectionString = configuration.GetConnectionString("DefaultConnection");
 var options = new DbContextOptionsBuilder<ComputerGamesContext>()
-    .UseSqlite($"Data Source={dbPath}")
+    .UseSqlServer(connectionString)
     .EnableDetailedErrors()
     .Options;
 
 using var dbContext = new ComputerGamesContext(options);
-await dbContext.Database.EnsureCreatedAsync();
+
+// Simple retry logic to wait for SQL Server to be ready
+var retryCount = 0;
+const int maxRetries = 10;
+while (retryCount < maxRetries)
+{
+    try
+    {
+        await dbContext.Database.EnsureCreatedAsync();
+        break;
+    }
+    catch (Exception)
+    {
+        retryCount++;
+        if (retryCount == maxRetries)
+        {
+            asciiRenderer.Error("Could not connect to the database. Please make sure SQL Server is running.");
+            return;
+        }
+        Console.WriteLine($"Database not ready, retrying ({retryCount}/{maxRetries})...");
+        await Task.Delay(2000);
+    }
+}
 
 IGameService gameService = new GameService(dbContext);
 var ui = new ConsoleUi(gameService, asciiRenderer);

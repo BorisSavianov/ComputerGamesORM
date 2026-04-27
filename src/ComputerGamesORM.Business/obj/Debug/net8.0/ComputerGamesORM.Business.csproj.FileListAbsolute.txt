@@ -1,0 +1,16 @@
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/bin/Debug/net8.0/ComputerGamesORM.Business.deps.json
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/bin/Debug/net8.0/ComputerGamesORM.Business.dll
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/bin/Debug/net8.0/ComputerGamesORM.Business.pdb
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/bin/Debug/net8.0/ComputerGamesORM.Data.dll
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/bin/Debug/net8.0/ComputerGamesORM.Data.pdb
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.csproj.AssemblyReference.cache
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.GeneratedMSBuildEditorConfig.editorconfig
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.AssemblyInfoInputs.cache
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.AssemblyInfo.cs
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.csproj.CoreCompileInputs.cache
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.sourcelink.json
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.csproj.CopyComplete
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.dll
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/refint/ComputerGamesORM.Business.dll
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ComputerGamesORM.Business.pdb
+/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/Debug/net8.0/ref/ComputerGamesORM.Business.dll

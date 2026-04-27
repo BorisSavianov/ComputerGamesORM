@@ -1,0 +1,140 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj": {}
+  },
+  "projects": {
+    "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj",
+        "projectName": "ComputerGamesORM.Business",
+        "projectPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj",
+        "packagesPath": "/home/boris/.nuget/packages/",
+        "outputPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/boris/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj": {
+                "projectPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.25, 8.0.25]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.125/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj",
+        "projectName": "ComputerGamesORM.Data",
+        "projectPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj",
+        "packagesPath": "/home/boris/.nuget/packages/",
+        "outputPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/boris/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.25, 8.0.25]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.125/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

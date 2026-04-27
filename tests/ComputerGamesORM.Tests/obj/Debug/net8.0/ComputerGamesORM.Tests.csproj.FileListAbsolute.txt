@@ -1,0 +1,7 @@
+/home/boris/Documents/Joro/ComputerGamesORM/tests/ComputerGamesORM.Tests/bin/Debug/net8.0/.msCoverageSourceRootsMapping_ComputerGamesORM.Tests
+/home/boris/Documents/Joro/ComputerGamesORM/tests/ComputerGamesORM.Tests/obj/Debug/net8.0/ComputerGamesORM.Tests.csproj.AssemblyReference.cache
+/home/boris/Documents/Joro/ComputerGamesORM/tests/ComputerGamesORM.Tests/obj/Debug/net8.0/ComputerGamesORM.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/home/boris/Documents/Joro/ComputerGamesORM/tests/ComputerGamesORM.Tests/obj/Debug/net8.0/ComputerGamesORM.Tests.AssemblyInfoInputs.cache
+/home/boris/Documents/Joro/ComputerGamesORM/tests/ComputerGamesORM.Tests/obj/Debug/net8.0/ComputerGamesORM.Tests.AssemblyInfo.cs
+/home/boris/Documents/Joro/ComputerGamesORM/tests/ComputerGamesORM.Tests/obj/Debug/net8.0/ComputerGamesORM.Tests.csproj.CoreCompileInputs.cache
+/home/boris/Documents/Joro/ComputerGamesORM/tests/ComputerGamesORM.Tests/obj/Debug/net8.0/ComputerGamesORM.Tests.sourcelink.json

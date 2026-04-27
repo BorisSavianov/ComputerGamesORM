@@ -82,9 +82,13 @@ public sealed class ConsoleUi
         try
         {
             await _gameService.AddAsync(gameName, cancellationToken);
-            _asciiRenderer.Success("Game added.");
+            _asciiRenderer.Success("Game added successfully.");
         }
         catch (ArgumentException ex)
+        {
+            _asciiRenderer.Error(ex.Message);
+        }
+        catch (InvalidOperationException ex)
         {
             _asciiRenderer.Error(ex.Message);
         }
@@ -92,7 +96,7 @@ public sealed class ConsoleUi
 
     private async Task UpdateGameAsync(CancellationToken cancellationToken)
     {
-        var id = ReadPositiveInteger("Game ID: ");
+        var id = ReadPositiveInteger("Enter Game ID to update: ");
         Console.Write("New game name: ");
         var gameName = Console.ReadLine() ?? string.Empty;
 
@@ -101,13 +105,17 @@ public sealed class ConsoleUi
             var isUpdated = await _gameService.UpdateAsync(id, gameName, cancellationToken);
             if (!isUpdated)
             {
-                Console.WriteLine("Game not found!");
+                _asciiRenderer.Error("Game not found!");
                 return;
             }
 
-            _asciiRenderer.Success("Game updated.");
+            _asciiRenderer.Success("Game updated successfully.");
         }
         catch (ArgumentException ex)
+        {
+            _asciiRenderer.Error(ex.Message);
+        }
+        catch (InvalidOperationException ex)
         {
             _asciiRenderer.Error(ex.Message);
         }
@@ -115,23 +123,42 @@ public sealed class ConsoleUi
 
     private async Task FetchByIdAsync(CancellationToken cancellationToken)
     {
-        var id = ReadPositiveInteger("Game ID: ");
+        var id = ReadPositiveInteger("Enter Game ID: ");
         var game = await _gameService.GetByIdAsync(id, cancellationToken);
 
         if (game is not null)
         {
-            Console.WriteLine(game.Name);
+            _asciiRenderer.Success($"Found: {game.Name}");
+        }
+        else
+        {
+            _asciiRenderer.Error("Game not found.");
         }
     }
 
     private async Task DeleteByIdAsync(CancellationToken cancellationToken)
     {
-        var id = ReadPositiveInteger("Game ID: ");
-        var isDeleted = await _gameService.DeleteAsync(id, cancellationToken);
+        var id = ReadPositiveInteger("Enter Game ID to delete: ");
+        
+        var game = await _gameService.GetByIdAsync(id, cancellationToken);
+        if (game is null)
+        {
+            _asciiRenderer.Error("Game not found.");
+            return;
+        }
 
+        Console.Write($"Are you sure you want to delete '{game.Name}'? (y/N): ");
+        var confirmation = Console.ReadLine();
+        if (confirmation?.ToLower() != "y")
+        {
+            Console.WriteLine("Deletion cancelled.");
+            return;
+        }
+
+        var isDeleted = await _gameService.DeleteAsync(id, cancellationToken);
         if (isDeleted)
         {
-            Console.WriteLine("Done.");
+            _asciiRenderer.Success("Done.");
         }
     }
 

@@ -40,6 +40,11 @@ public sealed class GameService : IGameService
     {
         var normalizedName = NormalizeName(gameName);
 
+        if (await _context.Games.AnyAsync(g => g.Name == normalizedName, cancellationToken))
+        {
+            throw new InvalidOperationException($"Game with name '{normalizedName}' already exists.");
+        }
+
         var game = new Game
         {
             Name = normalizedName
@@ -63,6 +68,11 @@ public sealed class GameService : IGameService
         if (game is null)
         {
             return false;
+        }
+
+        if (await _context.Games.AnyAsync(g => g.Name == normalizedName && g.Id != id, cancellationToken))
+        {
+            throw new InvalidOperationException($"Another game with name '{normalizedName}' already exists.");
         }
 
         game.Name = normalizedName;
