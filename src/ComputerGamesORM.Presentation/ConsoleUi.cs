@@ -67,10 +67,10 @@ public sealed class ConsoleUi
     {
         _asciiRenderer.ListHint();
 
-        var games = await _gameService.GetAllAsync(cancellationToken);
+        var games = await _gameService.GetAllAsync(cancellationToken: cancellationToken);
         foreach (var game in games)
         {
-            Console.WriteLine($"{game.Id}. {game.Name}");
+            Console.WriteLine($"{game.Id}. {game.Name} - {game.Description}");
         }
     }
 
@@ -78,10 +78,12 @@ public sealed class ConsoleUi
     {
         Console.Write("Game name: ");
         var gameName = Console.ReadLine() ?? string.Empty;
+        Console.Write("Description: ");
+        var description = Console.ReadLine() ?? string.Empty;
 
         try
         {
-            await _gameService.AddAsync(gameName, cancellationToken);
+            await _gameService.CreateAsync(new GameEditModel(gameName, description), cancellationToken);
             _asciiRenderer.Success("Game added successfully.");
         }
         catch (ArgumentException ex)
@@ -99,10 +101,12 @@ public sealed class ConsoleUi
         var id = ReadPositiveInteger("Enter Game ID to update: ");
         Console.Write("New game name: ");
         var gameName = Console.ReadLine() ?? string.Empty;
+        Console.Write("New description: ");
+        var description = Console.ReadLine() ?? string.Empty;
 
         try
         {
-            var isUpdated = await _gameService.UpdateAsync(id, gameName, cancellationToken);
+            var isUpdated = await _gameService.UpdateAsync(id, new GameEditModel(gameName, description), cancellationToken);
             if (!isUpdated)
             {
                 _asciiRenderer.Error("Game not found!");
@@ -128,7 +132,7 @@ public sealed class ConsoleUi
 
         if (game is not null)
         {
-            _asciiRenderer.Success($"Found: {game.Name}");
+            _asciiRenderer.Success($"Found: {game.Name} - {game.Description}");
         }
         else
         {

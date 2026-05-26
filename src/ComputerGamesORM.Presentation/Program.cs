@@ -1,5 +1,6 @@
 using ComputerGamesORM.Business;
 using ComputerGamesORM.Data;
+using ComputerGamesORM.Data.Repositories;
 using ComputerGamesORM.Presentation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,8 @@ var options = new DbContextOptionsBuilder<ComputerGamesContext>()
     .EnableDetailedErrors()
     .Options;
 
-using var dbContext = new ComputerGamesContext(options);
+var dbContextFactory = new ConsoleDbContextFactory(options);
+var databaseInitializer = new DatabaseInitializer(dbContextFactory);
 
 // Simple retry logic to wait for SQL Server to be ready
 var retryCount = 0;
@@ -27,7 +29,7 @@ while (retryCount < maxRetries)
 {
     try
     {
-        await dbContext.Database.EnsureCreatedAsync();
+        await databaseInitializer.InitializeAsync();
         break;
     }
     catch (Exception)
@@ -43,7 +45,7 @@ while (retryCount < maxRetries)
     }
 }
 
-IGameService gameService = new GameService(dbContext);
+IGameService gameService = new GameService(new GameRepository(dbContextFactory));
 var ui = new ConsoleUi(gameService, asciiRenderer);
 
 try
@@ -53,4 +55,19 @@ try
 catch (Exception ex)
 {
     asciiRenderer.Error($"Unexpected error: {ex.Message}");
+}
+
+internal sealed class ConsoleDbContextFactory : IDbContextFactory<ComputerGamesContext>
+{
+    private readonly DbContextOptions<ComputerGamesContext> _options;
+
+    public ConsoleDbContextFactory(DbContextOptions<ComputerGamesContext> options)
+    {
+        _options = options;
+    }
+
+    public ComputerGamesContext CreateDbContext()
+    {
+        return new ComputerGamesContext(_options);
+    }
 }

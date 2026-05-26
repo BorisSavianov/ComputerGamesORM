@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0AHQn48+w6QP25VF0VukTKJZ0oX89nI6zp/9uoEtH8Yj6LOZSv7qsK+6i97q7s4qnjRAT09lxRMV1oreZL4HOg==",
+  "dgSpecHash": "hQyPhGKUqTM=",
   "success": true,
-  "projectFilePath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Presentation/ComputerGamesORM.Presentation.csproj",
+  "projectFilePath": "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Presentation/ComputerGamesORM.Presentation.csproj",
   "expectedPackageFiles": [
     "/home/boris/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
     "/home/boris/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",
@@ -66,7 +66,7 @@
     "/home/boris/.nuget/packages/system.text.json/8.0.0/system.text.json.8.0.0.nupkg.sha512",
     "/home/boris/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "/home/boris/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
-    "/home/boris/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
+    "/home/boris/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.27/microsoft.aspnetcore.app.ref.8.0.27.nupkg.sha512"
   ],
   "logs": []
 }

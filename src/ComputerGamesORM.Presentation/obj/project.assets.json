@@ -1149,7 +1149,8 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "8.0.4",
-          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.4"
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.4",
+          "Microsoft.Extensions.Configuration.Json": "8.0.0"
         },
         "compile": {
           "bin/placeholder/ComputerGamesORM.Data.dll": {}
@@ -3218,11 +3219,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Presentation/ComputerGamesORM.Presentation.csproj",
+      "projectUniqueName": "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Presentation/ComputerGamesORM.Presentation.csproj",
       "projectName": "ComputerGamesORM.Presentation",
-      "projectPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Presentation/ComputerGamesORM.Presentation.csproj",
+      "projectPath": "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Presentation/ComputerGamesORM.Presentation.csproj",
       "packagesPath": "/home/boris/.nuget/packages/",
-      "outputPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Presentation/obj/",
+      "outputPath": "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Presentation/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/boris/.nuget/NuGet/NuGet.Config"
@@ -3237,11 +3238,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj": {
-              "projectPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj"
+            "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj": {
+              "projectPath": "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Business/ComputerGamesORM.Business.csproj"
             },
-            "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj": {
-              "projectPath": "/home/boris/Documents/Joro/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj"
+            "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj": {
+              "projectPath": "/home/boris/Documents/JORO_FORMS/ComputerGamesORM/src/ComputerGamesORM.Data/ComputerGamesORM.Data.csproj"
             }
           }
         }
@@ -3283,7 +3284,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.25, 8.0.25]"
+            "version": "[8.0.27, 8.0.27]"
           }
         ],
         "frameworkReferences": {
@@ -3291,7 +3292,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.125/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.127/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

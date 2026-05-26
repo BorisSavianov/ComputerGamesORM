@@ -1,3 +1,3 @@
 namespace ComputerGamesORM.Business;
 
-public sealed record GameDto(int Id, string Name);
+public sealed record GameDto(int Id, string Name, string Description);

@@ -20,6 +20,7 @@ public sealed class GameConfiguration : IEntityTypeConfiguration<Game>
             .HasMaxLength(200);
 
         builder.HasIndex(g => g.Name)
+            .IsUnique()
             .HasDatabaseName("IX_Games_Name");
     }
 }

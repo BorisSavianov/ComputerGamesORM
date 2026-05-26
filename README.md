@@ -1,63 +1,110 @@
 # ComputerGamesORM
 
-Production-grade three-layer console application with Entity Framework Core (Code First) for managing `Games` in database `ComputerGamesORM`.
+Three-layer .NET 8 Windows Forms desktop application with Entity Framework Core Code First and SQL Server LocalDB.
 
-## Project structure
+## Solution Architecture
 
-- `src/ComputerGamesORM.Data` — Data layer
-  - `Models/Game.cs` — entity model for table `Games`
-  - `ComputerGamesContext.cs` — EF Core `DbContext`
-  - `Configurations/GameConfiguration.cs` — fluent mapping configuration
-- `src/ComputerGamesORM.Business` — Business layer
-  - `IGameService.cs` — service contract
-  - `GameService.cs` — business logic, CRUD operations, validation
-  - `GameDto.cs` — data transfer model for presentation
-- `src/ComputerGamesORM.Presentation` — Presentation layer
-  - `ConsoleUi.cs` — console menu and user interaction
-  - `AsciiRenderer.cs` — feature-flagged ASCII visual effects
-  - `AppSettings.cs` — UI feature flag model
-  - `Program.cs` — app entry point, configuration loading, EF context initialization
-  - `appsettings.json` — `EnableAsciiUI` feature flag
-- `tests/ComputerGamesORM.Tests` — NUnit test project
-  - `InMemoryDbContext.cs` — isolated EF InMemory context factory
-  - `GameServiceTests.cs` — deterministic unit tests (AAA)
+- `ComputerGamesORM.WinForms` - primary presentation layer. Contains the polished WinForms CRUD UI, DI startup, LocalDB configuration, validation feedback, confirmation dialogs, and async event handlers.
+- `ComputerGamesORM.Business` - business logic layer. Contains service contracts, DTOs, edit models, validation rules, and CRUD operations.
+- `ComputerGamesORM.Data` - data access layer. Contains EF Core entities, configurations, DbContext, repository implementation, migrations, design-time context factory, and database initializer.
+- `ComputerGamesORM.Presentation` - legacy console presentation kept for reference and compatibility.
+- `ComputerGamesORM.Tests` - NUnit tests for service-level CRUD and validation behavior using SQLite in-memory relational storage.
 
-## Features
+## Database Model
 
-1. List all games (ID + Name)
-2. Add new game
-3. Update game by ID
-4. Fetch game name by ID
-5. Delete game by ID
+Code First creates database `ComputerGamesORM` with two related tables:
 
-## Rules implemented
+- `Games`
+  - `Id` primary key
+  - `Name` required, max length 200, unique index
+- `GameDescriptions`
+  - `Id` primary key
+  - `Description` required, max length 2000
+  - `GameId` required foreign key to `Games.Id`
 
-- Update by non-existing ID prints exactly: `Game not found!`
-- Fetch by non-existing/out-of-range ID performs no output and no extra action
-- Successful delete prints exactly: `Done.`
-- User input is validated
-- Empty/invalid names are blocked by business-level validation
+The relationship is one-to-one. Deleting a game cascades to its description.
 
-## ASCII UI feature flag
+## NuGet Packages
 
-Feature flag `EnableAsciiUI` is controlled from `appsettings.json`.
+Main packages used:
 
-- `true` → startup banner + lightweight ASCII reactions (`✔`, `✖`)
-- `false` → plain console output only
+- `Microsoft.EntityFrameworkCore`
+- `Microsoft.EntityFrameworkCore.SqlServer`
+- `Microsoft.EntityFrameworkCore.Design`
+- `Microsoft.EntityFrameworkCore.Tools`
+- `Microsoft.Extensions.Configuration.Json`
+- `Microsoft.Extensions.DependencyInjection`
+- `Microsoft.Extensions.Logging.Abstractions`
+- `Microsoft.EntityFrameworkCore.Sqlite` for relational tests
+- `NUnit`, `NUnit3TestAdapter`, `Microsoft.NET.Test.Sdk`
 
-## Build, test and run
+## WinForms Features
 
-1. Start SQL Server 2022 using Docker Compose:
-```bash
-docker-compose up -d
-```
+- Modern dark UI with responsive table/details layout
+- Search by ID, game name, or description
+- Customized `DataGridView`
+- Details/edit panel
+- Add, edit, delete, save, cancel, refresh workflows
+- Input validation with `ErrorProvider`
+- Duplicate name prevention in BLL
+- Delete confirmation dialog
+- Status notifications
+- Startup database migration and sample seed data
 
-2. Run the application:
+## Build, Test, and Run
+
+Restore dependencies:
+
 ```bash
 dotnet restore
-dotnet test
-dotnet run --project src/ComputerGamesORM.Presentation
 ```
 
-> The application uses SQL Server 2022. Connection details are configured in `appsettings.json`. The database is created automatically at startup if it does not exist.
+Restore EF Core CLI tool:
 
+```bash
+dotnet tool restore
+```
+
+Build and test:
+
+```bash
+dotnet build
+dotnet test
+```
+
+Run the Windows Forms app:
+
+```bash
+dotnet run --project src/ComputerGamesORM.WinForms
+```
+
+The WinForms app uses LocalDB by default:
+
+```text
+Server=(localdb)\MSSQLLocalDB;Database=ComputerGamesORM;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true
+```
+
+The database is migrated automatically on startup.
+
+The Docker target is intentionally limited to the legacy console project. The production WinForms UI is an interactive Windows desktop application and should be launched on Windows.
+
+## EF Core Migration Commands
+
+Add a migration:
+
+```bash
+dotnet ef migrations add InitialCreate --project src/ComputerGamesORM.Data --startup-project src/ComputerGamesORM.WinForms --context ComputerGamesContext --output-dir Migrations
+```
+
+Apply migrations manually:
+
+```bash
+dotnet ef database update --project src/ComputerGamesORM.Data --startup-project src/ComputerGamesORM.WinForms --context ComputerGamesContext
+```
+
+## Future Improvements
+
+- Add pagination for very large game catalogs.
+- Add richer metadata such as genre, platform, release year, and publisher.
+- Add integration tests against SQL Server LocalDB in addition to the SQLite relational tests.
+- Add import/export for CSV or Excel catalog management.

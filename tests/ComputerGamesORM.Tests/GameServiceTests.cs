@@ -1,5 +1,6 @@
 using ComputerGamesORM.Business;
 using ComputerGamesORM.Data.Models;
+using NUnit.Framework;
 
 namespace ComputerGamesORM.Tests;
 
@@ -7,149 +8,172 @@ namespace ComputerGamesORM.Tests;
 public sealed class GameServiceTests
 {
     [Test]
-    public async Task AddGame_WithValidInput_ShouldSucceed()
+    public async Task CreateGame_WithValidInput_ShouldSucceed()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(AddGame_WithValidInput_ShouldSucceed));
-        var service = new GameService(context);
+        using var database = new SqliteTestDatabase();
+        var service = database.CreateService();
 
-        // Act
-        var id = await service.AddAsync("Cyberpunk 2077");
+        var id = await service.CreateAsync(new GameEditModel("Cyberpunk 2077", "Open-world role-playing game."));
 
-        // Assert
+        using var context = database.CreateContext();
         Assert.That(id, Is.GreaterThan(0));
         Assert.That(context.Games.Count(), Is.EqualTo(1));
+        Assert.That(context.GameDescriptions.Count(), Is.EqualTo(1));
     }
 
     [Test]
-    public void AddGame_WithEmptyOrNull_ShouldThrow()
+    public void CreateGame_WithEmptyName_ShouldThrow()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(AddGame_WithEmptyOrNull_ShouldThrow));
-        var service = new GameService(context);
+        using var database = new SqliteTestDatabase();
+        var service = database.CreateService();
 
-        // Act + Assert
-        Assert.ThrowsAsync<ArgumentException>(async () => await service.AddAsync(string.Empty));
-        Assert.ThrowsAsync<ArgumentException>(async () => await service.AddAsync("   "));
-        Assert.ThrowsAsync<ArgumentException>(async () => await service.AddAsync(null!));
+        Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateAsync(new GameEditModel(string.Empty, "Description")));
+        Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateAsync(new GameEditModel("   ", "Description")));
     }
 
     [Test]
-    public async Task GetGameById_WithValidId_ShouldReturnEntity()
+    public void CreateGame_WithEmptyDescription_ShouldThrow()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(GetGameById_WithValidId_ShouldReturnEntity));
-        context.Games.Add(new Game { Name = "Half-Life" });
-        await context.SaveChangesAsync();
+        using var database = new SqliteTestDatabase();
+        var service = database.CreateService();
 
-        var service = new GameService(context);
-        var id = context.Games.Single().Id;
+        Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateAsync(new GameEditModel("Portal", string.Empty)));
+        Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateAsync(new GameEditModel("Portal", "   ")));
+    }
 
-        // Act
+    [Test]
+    public async Task CreateGame_WithDuplicateName_ShouldThrow()
+    {
+        using var database = new SqliteTestDatabase();
+        var service = database.CreateService();
+        await service.CreateAsync(new GameEditModel("Portal", "First description."));
+
+        Assert.ThrowsAsync<InvalidOperationException>(async () => await service.CreateAsync(new GameEditModel("Portal", "Second description.")));
+    }
+
+    [Test]
+    public async Task GetGameById_WithValidId_ShouldReturnEntityWithDescription()
+    {
+        using var database = new SqliteTestDatabase();
+        var id = await SeedGameAsync(database, "Half-Life", "Science-fiction shooter.");
+        var service = database.CreateService();
+
         var game = await service.GetByIdAsync(id);
 
-        // Assert
         Assert.That(game, Is.Not.Null);
         Assert.That(game!.Name, Is.EqualTo("Half-Life"));
+        Assert.That(game.Description, Is.EqualTo("Science-fiction shooter."));
     }
 
     [Test]
     public async Task GetGameById_WithInvalidId_ShouldReturnNull()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(GetGameById_WithInvalidId_ShouldReturnNull));
-        var service = new GameService(context);
+        using var database = new SqliteTestDatabase();
+        var service = database.CreateService();
 
-        // Act
         var game = await service.GetByIdAsync(-1);
 
-        // Assert
         Assert.That(game, Is.Null);
     }
 
     [Test]
     public async Task UpdateGame_WithValidId_ShouldUpdate()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(UpdateGame_WithValidId_ShouldUpdate));
-        context.Games.Add(new Game { Name = "Dota" });
-        await context.SaveChangesAsync();
+        using var database = new SqliteTestDatabase();
+        var id = await SeedGameAsync(database, "Dota", "Original description.");
+        var service = database.CreateService();
 
-        var service = new GameService(context);
-        var id = context.Games.Single().Id;
+        var result = await service.UpdateAsync(id, new GameEditModel("Dota 2", "Updated multiplayer strategy game."));
 
-        // Act
-        var result = await service.UpdateAsync(id, "Dota 2");
-
-        // Assert
+        using var context = database.CreateContext();
         Assert.That(result, Is.True);
         Assert.That(context.Games.Single().Name, Is.EqualTo("Dota 2"));
+        Assert.That(context.GameDescriptions.Single().Description, Is.EqualTo("Updated multiplayer strategy game."));
     }
 
     [Test]
     public async Task UpdateGame_WithInvalidId_ShouldReturnFalse()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(UpdateGame_WithInvalidId_ShouldReturnFalse));
-        var service = new GameService(context);
+        using var database = new SqliteTestDatabase();
+        var service = database.CreateService();
 
-        // Act
-        var result = await service.UpdateAsync(999, "No Game");
+        var result = await service.UpdateAsync(999, new GameEditModel("No Game", "Description."));
 
-        // Assert
         Assert.That(result, Is.False);
     }
 
     [Test]
-    public async Task DeleteGame_WithValidId_ShouldRemoveEntity()
+    public async Task DeleteGame_WithValidId_ShouldRemoveEntityAndDescription()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(DeleteGame_WithValidId_ShouldRemoveEntity));
-        context.Games.Add(new Game { Name = "Hades" });
-        await context.SaveChangesAsync();
+        using var database = new SqliteTestDatabase();
+        var id = await SeedGameAsync(database, "Hades", "Roguelike action game.");
+        var service = database.CreateService();
 
-        var service = new GameService(context);
-        var id = context.Games.Single().Id;
-
-        // Act
         var result = await service.DeleteAsync(id);
 
-        // Assert
+        using var context = database.CreateContext();
         Assert.That(result, Is.True);
         Assert.That(context.Games.Any(), Is.False);
+        Assert.That(context.GameDescriptions.Any(), Is.False);
     }
 
     [Test]
     public async Task DeleteGame_WithInvalidId_ShouldNotCrash()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(DeleteGame_WithInvalidId_ShouldNotCrash));
-        var service = new GameService(context);
+        using var database = new SqliteTestDatabase();
+        var service = database.CreateService();
 
-        // Act
         var result = await service.DeleteAsync(1000);
 
-        // Assert
         Assert.That(result, Is.False);
     }
 
     [Test]
     public async Task GetAll_ShouldReturnCorrectList()
     {
-        // Arrange
-        using var context = InMemoryDbContext.Create(nameof(GetAll_ShouldReturnCorrectList));
-        context.Games.AddRange(
-            new Game { Name = "Portal" },
-            new Game { Name = "Doom" });
-        await context.SaveChangesAsync();
+        using var database = new SqliteTestDatabase();
+        await SeedGameAsync(database, "Portal", "Puzzle game.");
+        await SeedGameAsync(database, "Doom", "Shooter.");
+        var service = database.CreateService();
 
-        var service = new GameService(context);
-
-        // Act
         var games = await service.GetAllAsync();
 
-        // Assert
         Assert.That(games.Count, Is.EqualTo(2));
         Assert.That(games.Select(g => g.Name), Is.EquivalentTo(new[] { "Portal", "Doom" }));
+        Assert.That(games.Select(g => g.Description), Is.EquivalentTo(new[] { "Puzzle game.", "Shooter." }));
+    }
+
+    [Test]
+    public async Task GetAll_WithSearchText_ShouldFilterByNameDescriptionOrId()
+    {
+        using var database = new SqliteTestDatabase();
+        var portalId = await SeedGameAsync(database, "Portal", "Puzzle game.");
+        await SeedGameAsync(database, "Doom", "Shooter.");
+        var service = database.CreateService();
+
+        var byName = await service.GetAllAsync("porta");
+        var byDescription = await service.GetAllAsync("shoot");
+        var byId = await service.GetAllAsync(portalId.ToString());
+
+        Assert.That(byName.Select(g => g.Name), Is.EqualTo(new[] { "Portal" }));
+        Assert.That(byDescription.Select(g => g.Name), Is.EqualTo(new[] { "Doom" }));
+        Assert.That(byId.Select(g => g.Name), Is.EqualTo(new[] { "Portal" }));
+    }
+
+    private static async Task<int> SeedGameAsync(SqliteTestDatabase database, string name, string description)
+    {
+        using var context = database.CreateContext();
+        var game = new Game
+        {
+            Name = name,
+            GameDescription = new GameDescription
+            {
+                Description = description
+            }
+        };
+
+        context.Games.Add(game);
+        await context.SaveChangesAsync();
+        return game.Id;
     }
 }

@@ -1,25 +1,25 @@
-using ComputerGamesORM.Data;
 using ComputerGamesORM.Data.Models;
-using Microsoft.EntityFrameworkCore;
+using ComputerGamesORM.Data.Repositories;
+using ComputerGamesORM.Data.Exceptions;
 
 namespace ComputerGamesORM.Business;
 
 public sealed class GameService : IGameService
 {
-    private readonly ComputerGamesContext _context;
+    public const int MaxNameLength = 200;
+    public const int MaxDescriptionLength = 2000;
 
-    public GameService(ComputerGamesContext context)
+    private readonly IGameRepository _gameRepository;
+
+    public GameService(IGameRepository gameRepository)
     {
-        _context = context;
+        _gameRepository = gameRepository;
     }
 
-    public async Task<IReadOnlyCollection<GameDto>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<GameDto>> GetAllAsync(string? searchText = null, CancellationToken cancellationToken = default)
     {
-        return await _context.Games
-            .AsNoTracking()
-            .OrderBy(g => g.Id)
-            .Select(g => new GameDto(g.Id, g.Name))
-            .ToListAsync(cancellationToken);
+        var games = await _gameRepository.GetAllAsync(searchText, cancellationToken);
+        return games.Select(MapToDto).ToList();
     }
 
     public async Task<GameDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
@@ -29,55 +29,65 @@ public sealed class GameService : IGameService
             return null;
         }
 
-        return await _context.Games
-            .AsNoTracking()
-            .Where(g => g.Id == id)
-            .Select(g => new GameDto(g.Id, g.Name))
-            .FirstOrDefaultAsync(cancellationToken);
+        var game = await _gameRepository.GetByIdAsync(id, cancellationToken: cancellationToken);
+        return game is null ? null : MapToDto(game);
     }
 
-    public async Task<int> AddAsync(string gameName, CancellationToken cancellationToken = default)
+    public async Task<int> CreateAsync(GameEditModel model, CancellationToken cancellationToken = default)
     {
-        var normalizedName = NormalizeName(gameName);
+        var normalized = Normalize(model);
 
-        if (await _context.Games.AnyAsync(g => g.Name == normalizedName, cancellationToken))
+        if (await _gameRepository.ExistsByNameAsync(normalized.Name, cancellationToken: cancellationToken))
         {
-            throw new InvalidOperationException($"Game with name '{normalizedName}' already exists.");
+            throw new InvalidOperationException($"Game with name '{normalized.Name}' already exists.");
         }
 
         var game = new Game
         {
-            Name = normalizedName
+            Name = normalized.Name,
+            GameDescription = new GameDescription
+            {
+                Description = normalized.Description
+            }
         };
 
-        _context.Games.Add(game);
-        await _context.SaveChangesAsync(cancellationToken);
-        return game.Id;
+        try
+        {
+            return await _gameRepository.AddAsync(game, cancellationToken);
+        }
+        catch (DataConflictException ex)
+        {
+            throw new InvalidOperationException($"Game with name '{normalized.Name}' already exists.", ex);
+        }
     }
 
-    public async Task<bool> UpdateAsync(int id, string gameName, CancellationToken cancellationToken = default)
+    public async Task<bool> UpdateAsync(int id, GameEditModel model, CancellationToken cancellationToken = default)
     {
         if (id <= 0)
         {
             return false;
         }
 
-        var normalizedName = NormalizeName(gameName);
-        var game = await _context.Games.FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
-
-        if (game is null)
+        var normalized = Normalize(model);
+        var existingGame = await _gameRepository.GetByIdAsync(id, cancellationToken: cancellationToken);
+        if (existingGame is null)
         {
             return false;
         }
 
-        if (await _context.Games.AnyAsync(g => g.Name == normalizedName && g.Id != id, cancellationToken))
+        if (await _gameRepository.ExistsByNameAsync(normalized.Name, id, cancellationToken))
         {
-            throw new InvalidOperationException($"Another game with name '{normalizedName}' already exists.");
+            throw new InvalidOperationException($"Another game with name '{normalized.Name}' already exists.");
         }
 
-        game.Name = normalizedName;
-        await _context.SaveChangesAsync(cancellationToken);
-        return true;
+        try
+        {
+            return await _gameRepository.UpdateAsync(id, normalized.Name, normalized.Description, cancellationToken);
+        }
+        catch (DataConflictException ex)
+        {
+            throw new InvalidOperationException($"Another game with name '{normalized.Name}' already exists.", ex);
+        }
     }
 
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
@@ -87,31 +97,43 @@ public sealed class GameService : IGameService
             return false;
         }
 
-        var game = await _context.Games.FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
-
-        if (game is null)
-        {
-            return false;
-        }
-
-        _context.Games.Remove(game);
-        await _context.SaveChangesAsync(cancellationToken);
-        return true;
+        return await _gameRepository.DeleteAsync(id, cancellationToken);
     }
 
-    private static string NormalizeName(string gameName)
+    private static (string Name, string Description) Normalize(GameEditModel model)
     {
-        if (string.IsNullOrWhiteSpace(gameName))
+        ArgumentNullException.ThrowIfNull(model);
+
+        if (string.IsNullOrWhiteSpace(model.Name))
         {
-            throw new ArgumentException("Game name cannot be empty.", nameof(gameName));
+            throw new ArgumentException("Game name cannot be empty.", nameof(model));
         }
 
-        var normalizedName = gameName.Trim();
-        if (normalizedName.Length > 200)
+        if (string.IsNullOrWhiteSpace(model.Description))
         {
-            throw new ArgumentException("Game name must be up to 200 characters.", nameof(gameName));
+            throw new ArgumentException("Game description cannot be empty.", nameof(model));
         }
 
-        return normalizedName;
+        var normalizedName = model.Name.Trim();
+        if (normalizedName.Length > MaxNameLength)
+        {
+            throw new ArgumentException($"Game name must be up to {MaxNameLength} characters.", nameof(model));
+        }
+
+        var normalizedDescription = model.Description.Trim();
+        if (normalizedDescription.Length > MaxDescriptionLength)
+        {
+            throw new ArgumentException($"Game description must be up to {MaxDescriptionLength} characters.", nameof(model));
+        }
+
+        return (normalizedName, normalizedDescription);
+    }
+
+    private static GameDto MapToDto(Game game)
+    {
+        return new GameDto(
+            game.Id,
+            game.Name,
+            game.GameDescription?.Description ?? string.Empty);
     }
 }

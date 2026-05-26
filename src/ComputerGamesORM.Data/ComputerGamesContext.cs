@@ -13,9 +13,12 @@ public class ComputerGamesContext : DbContext
 
     public DbSet<Game> Games => Set<Game>();
 
+    public DbSet<GameDescription> GameDescriptions => Set<GameDescription>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new GameConfiguration());
+        modelBuilder.ApplyConfiguration(new GameDescriptionConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }
